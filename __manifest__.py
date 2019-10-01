@@ -28,5 +28,6 @@
     ],
     'data': [
         'views/res_users.xml',
+        'views/wizard_sale_commission.xml',
     ]
 }
