@@ -10,6 +10,8 @@
                     <group>
                         <field name="currency_id" invisible="1"/>
                         <field name="sales_target"/>
+                        <!-- TODO Remove salesperson from tree -->
+                        <field name="sale_order_ids2"/>
                     </group>
                 </page>                
             </notebook>            

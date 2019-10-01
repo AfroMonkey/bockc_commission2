@@ -11,6 +11,12 @@ class ResUsers(models.Model):
     sales_target = fields.Monetary(
         currency_field='currency_id',
     )
+    sale_order_ids2 = fields.One2many(
+        string=u'Sale Orders',
+        comodel_name='sale.order',
+        inverse_name='user_id',
+    )
+    
 
     @api.constrains('sales_target')
     def _check_sales_target_no_negative(self):
