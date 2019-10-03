@@ -19,4 +19,5 @@
 ##############################################################################
 
 from . import res_users
+from . import wizard_sale_commission_row
 from . import wizard_sale_commission

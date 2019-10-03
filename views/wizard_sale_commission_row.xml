@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="wizard_sale_commission_row_view_form" model="ir.ui.view">
+        <field name="name">wizard_sale_commission.row.view.form</field>
+        <field name="model">wizard_sale_commission.row</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="user_id"/>
+                <field name="total_sales"/>
+                <field name="sales_target"/>
+                <field name="compliance_percentage" widget="progressbar"/>
+                <field name="bonus_percentage" widget="progressbar"/>
+                <field name="commission"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
