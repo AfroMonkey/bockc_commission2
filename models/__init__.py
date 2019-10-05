@@ -18,6 +18,8 @@
 #
 ##############################################################################
 
+from . import commission_plan
 from . import res_users
-from . import wizard_sale_commission_row
+from . import sale_order
 from . import wizard_sale_commission
+from . import wizard_sale_commission_row

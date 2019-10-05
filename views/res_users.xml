@@ -9,6 +9,7 @@
                 <page string="Sales target" >
                     <group>
                         <field name="currency_id" invisible="1"/>
+                        <field name="commission_plan_id"/>
                         <field name="sales_target"/>
                         <!-- TODO Remove salesperson from tree -->
                         <field name="sale_order_ids2"/>

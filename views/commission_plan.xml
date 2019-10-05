@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="commission_plan_row_view_tree" model="ir.ui.view">
+        <field name="name">commission.plan.row.view.tree</field>
+        <field name="model">commission.plan.row</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="margin"/>
+                <field name="percentage"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="commission_plan_view_form" model="ir.ui.view">
+        <field name="name">commission.plan.view.form</field>
+        <field name="model">commission.plan</field>
+        <field name="arch" type="xml">
+            <form string="Commission Plan">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="minimal_percentage"/>
+                        <field name="initial_commission"/>
+                    </group>
+                    <field name="row_ids"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

@@ -27,8 +27,10 @@
         'sale',
     ],
     'data': [
+        'security/ir.model.access.csv',
         'views/res_users.xml',
         'views/wizard_sale_commission_row.xml',
         'views/wizard_sale_commission.xml',
+        'views/commission_plan.xml',
     ]
 }

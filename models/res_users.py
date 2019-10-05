@@ -1,6 +1,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
+
 class ResUsers(models.Model):
     _inherit = 'res.users'
 
@@ -16,7 +17,11 @@ class ResUsers(models.Model):
         comodel_name='sale.order',
         inverse_name='user_id',
     )
-    
+    commission_plan_id = fields.Many2one(
+        comodel_name='commission.plan',
+        required=True,
+        string=_('Commission plan'),
+    )
 
     @api.constrains('sales_target')
     def _check_sales_target_no_negative(self):
