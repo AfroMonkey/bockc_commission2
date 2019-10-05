@@ -9,7 +9,7 @@
                     <field name="start_date"/>
                     <field name="end_date"/>
                 </group>
-                <field name="row_ids"/>
+                <field name="row_ids" default_focus="1"/>
                 <footer>
                     <button name="get_commissions" type="object" string="Calculate" class="oe_highlight"/>
                     or

@@ -20,10 +20,10 @@ class WizardSaleCommissionRow(models.TransientModel):
         required=True,
         string='Salesman',
     )
-    account_payment_ids = fields.Many2many(
-        comodel_name='account.payment',
+    sale_order_ids = fields.Many2many(
+        comodel_name='sale.order',
         string='Sales',
-        compute='_get_account_payment_ids',
+        compute='_get_sale_order_ids',
     )
     currency_id = fields.Many2one(
         comodel_name='res.currency',
@@ -48,21 +48,22 @@ class WizardSaleCommissionRow(models.TransientModel):
         compute='_get_commission',
     )
 
-    def _get_account_payment_ids(self):
     @api.depends('start_date', 'end_date', 'user_id')
+    def _get_sale_order_ids(self):
         for r in self:
-            AccountPayment = self.env['account.payment']
-            r.account_payment_ids = AccountPayment.search([
-                ('invoice_ids.user_id', '=', r.user_id.id),
-                ('state', '=', 'posted'),
-                ('payment_date', '>=', r.start),
-                ('payment_date', '<=', r.end),
+            SaleOrder = self.env['sale.order']
+            orders = SaleOrder.search([
+                ('user_id', '=', r.user_id.id),
+                ('confirmation_date', '>=', r.start_date),
+                ('confirmation_date', '<=', r.end_date),
+                ('invoice_status', '=', 'invoiced'),
             ])
+            r.sale_order_ids = orders.filtered(lambda order: all(invoice.state == 'paid' for invoice in order.invoice_ids))
     
-    @api.depends('account_payment_ids')
+    @api.depends('sale_order_ids')
     def _get_total_sales(self):
         for r in self:
-            r.total_sales = sum(payment.amount for payment in r.account_payment_ids)
+            r.total_sales = sum(order.amount_untaxed for order in r.sale_order_ids)
     
     @api.depends('total_sales', 'sales_target')
     def _get_compliance_percentage(self):
