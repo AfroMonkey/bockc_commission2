@@ -4,10 +4,10 @@ from odoo.exceptions import ValidationError
 class WizardSaleCommission(models.TransientModel):
     _name = 'wizard_sale_commission'
 
-    start = fields.Date(
+    start_date = fields.Date(
         required=True,
     )
-    end = fields.Date(
+    end_date = fields.Date(
         required=True,
     )
     row_ids = fields.One2many(
@@ -18,10 +18,10 @@ class WizardSaleCommission(models.TransientModel):
     )
 
     
-    @api.constrains('dates')
+    @api.constrains('start_date', 'end_date')
     def _check_dates(self):
         for r in self:
-            if r.end > r.start:
+            if r.start_date > r.end_date:
                 raise ValidationError(_('End date must be greater than start date.'))
     
 

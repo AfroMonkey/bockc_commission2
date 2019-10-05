@@ -9,11 +9,11 @@ class WizardSaleCommissionRow(models.TransientModel):
         required=True,
         string='',
     )
-    start = fields.Date(
-        related='wizard_id.start'
+    start_date = fields.Date(
+        related='wizard_id.start_date'
     )
-    end = fields.Date(
-        related='wizard_id.end'
+    end_date = fields.Date(
+        related='wizard_id.end_date'
     )
     user_id = fields.Many2one(
         comodel_name='res.users',
@@ -48,8 +48,8 @@ class WizardSaleCommissionRow(models.TransientModel):
         compute='_get_commission',
     )
 
-    @api.depends('start', 'end', 'user_id')
     def _get_account_payment_ids(self):
+    @api.depends('start_date', 'end_date', 'user_id')
         for r in self:
             AccountPayment = self.env['account.payment']
             r.account_payment_ids = AccountPayment.search([
