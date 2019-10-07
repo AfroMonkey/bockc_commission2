@@ -59,7 +59,7 @@ class WizardSaleCommissionRow(models.TransientModel):
                 ('user_id', '=', r.user_id.id),
                 ('confirmation_date', '>=', r.start_date),
                 ('confirmation_date', '<=', r.end_date),
-                ('invoice_status', '=', 'invoiced'),
+                # ('invoice_status', '=', 'invoiced'),
             ])
             r.sale_order_ids = orders.filtered(lambda order: all(invoice.state == 'paid' for invoice in order.invoice_ids))
     
