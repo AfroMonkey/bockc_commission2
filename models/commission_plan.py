@@ -3,6 +3,7 @@ from odoo import fields, models
 
 class CommissionPlanRow(models.Model):
     _name = 'commission.plan.row'
+    _description = '''Relation between percentage and margin.'''
 
     currency_id = fields.Many2one(
         comodel_name='res.currency',
@@ -25,6 +26,7 @@ class CommissionPlanRow(models.Model):
 
 class CommissionPlan(models.Model):
     _name = 'commission.plan'
+    _description = '''Table of bonus percentages.'''
 
     name = fields.Char(
         required=True,

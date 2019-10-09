@@ -3,6 +3,7 @@ from odoo import api, fields, models
 
 class WizardSaleCommissionRow(models.TransientModel):
     _name = 'wizard_sale_commission.row'
+    _description = '''Relation between salesperson and their commissions.'''
 
     wizard_id = fields.Many2one(
         comodel_name='wizard_sale_commission',

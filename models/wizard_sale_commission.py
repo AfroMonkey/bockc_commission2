@@ -4,6 +4,7 @@ from odoo.exceptions import ValidationError
 
 class WizardSaleCommission(models.TransientModel):
     _name = 'wizard_sale_commission'
+    _description = '''Assistant for commission list.'''
 
     start_date = fields.Date(
         required=True,
