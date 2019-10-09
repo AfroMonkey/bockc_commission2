@@ -8,3 +8,4 @@ class SaleOrder(models.Model):
     )
     commission = fields.Monetary(
     )
+    commissioned = fields.Boolean(default=False)

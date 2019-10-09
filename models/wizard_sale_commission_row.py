@@ -51,6 +51,9 @@ class WizardSaleCommissionRow(models.TransientModel):
         currency_field='currency_id',
         compute='_get_margin',
     )
+    all_sale_order_ids = fields.One2many(
+        related='user_id.sale_order_ids2',
+    )
 
     @api.depends('start_date', 'end_date', 'user_id')
     def _get_sale_order_ids(self):
@@ -59,7 +62,7 @@ class WizardSaleCommissionRow(models.TransientModel):
             orders = SaleOrder.search([
                 ('user_id', '=', record.user_id.id),
                 ('confirmation_date', '>=', record.start_date),
-                ('confirmation_date', '<=', record.end_date),
+                ('confirmation_date', '<', record.end_date),
                 # ('invoice_status', '=', 'invoiced'),
             ])
             record.sale_order_ids = orders.filtered(lambda order: order.invoice_ids and all(invoice.state == 'paid' for invoice in order.invoice_ids))
@@ -94,6 +97,7 @@ class WizardSaleCommissionRow(models.TransientModel):
                 order.write({
                     'commission_percentage': record.bonus_percentage,
                     'commission': order.amount_untaxed * record.bonus_percentage / 100,
+                    'commissioned': True,
                 })
 
     @api.depends('bonus_percentage', 'total_sales')

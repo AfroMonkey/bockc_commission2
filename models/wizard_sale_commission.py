@@ -1,3 +1,5 @@
+from datetime import date
+
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
@@ -7,10 +9,10 @@ class WizardSaleCommission(models.TransientModel):
     _description = '''Assistant for commission list.'''
 
     start_date = fields.Date(
-        required=True,
+        compute='_get_start_date'
     )
     end_date = fields.Date(
-        required=True,
+        compute='_get_end_date'
     )
     row_ids = fields.One2many(
         comodel_name='wizard_sale_commission.row',
@@ -18,6 +20,31 @@ class WizardSaleCommission(models.TransientModel):
         string='Rows',
         readonly=True,
     )
+    month = fields.Selection([
+        (1, 'January'),
+        (2, 'February'),
+        (3, 'March'),
+        (4, 'April'),
+        (5, 'May'),
+        (6, 'June'),
+        (7, 'July'),
+        (8, 'August'),
+        (9, 'September'),
+        (10, 'October'),
+        (11, 'November'),
+        (12, 'December'),
+    ])
+
+    def _get_start_date(self):
+        for record in self:
+            record.start_date = date(fields.Date.today().year, record.month, 1)
+
+    def _get_end_date(self):
+        for record in self:
+            if record.month == 12:
+                record.end_date = date(fields.Date.today().year + 1, 1, 1)
+            else:
+                record.end_date = date(fields.Date.today().year, record.month + 1, 1)
 
     @api.constrains('start_date', 'end_date')
     def _check_dates(self):
