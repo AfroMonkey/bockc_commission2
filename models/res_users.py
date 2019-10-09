@@ -25,6 +25,6 @@ class ResUsers(models.Model):
 
     @api.constrains('sales_target')
     def _check_sales_target_no_negative(self):
-        for r in self:
-            if r.sales_target < 0:
+        for record in self:
+            if record.sales_target < 0:
                 raise ValidationError(_('The sale target can not be negative.'))

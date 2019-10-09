@@ -14,8 +14,8 @@
                         <!-- TODO Remove salesperson from tree -->
                         <field name="sale_order_ids2"/>
                     </group>
-                </page>                
-            </notebook>            
+                </page>
+            </notebook>
         </field>
     </record>
 </odoo>

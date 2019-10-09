@@ -1,4 +1,4 @@
-from odoo import api, fields, models, _
+from odoo import fields, models
 
 
 class CommissionPlanRow(models.Model):
@@ -36,7 +36,7 @@ class CommissionPlan(models.Model):
         required=True,
     )
     row_ids = fields.One2many(
-        comodel_name='commission.plan.row', 
-        inverse_name='commission_plan_id', 
+        comodel_name='commission.plan.row',
+        inverse_name='commission_plan_id',
         string='Rows',
     )
