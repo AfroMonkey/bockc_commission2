@@ -26,9 +26,5 @@
         <field name="target">new</field>
     </record>
 
-    <menuitem
-        id="wizard_sale_commission_menu"
-        name="Commission"
-        action="wizard_sale_commission_action"
-        parent="sale.menu_sale_report"/>
+    <menuitem id="wizard_sale_commission_menu" name="Commission" action="wizard_sale_commission_action" parent="sale.menu_sale_report"/>
 </odoo>

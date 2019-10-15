@@ -13,6 +13,7 @@
                         <field name="end_date"/>
                     </group>
                     <group>
+                        <field name="commission_estimated"/>
                         <field name="commission"/>
                     </group>
                     <field name="sale_order_ids">
