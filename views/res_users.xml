@@ -6,11 +6,12 @@
         <field name="inherit_id" ref="base.view_users_form"/>
         <field name="arch" type="xml">
             <notebook position="inside">
-                <page string="Sales target" >
+                <page string="Sales target">
                     <group>
                         <field name="currency_id" invisible="1"/>
                         <field name="commission_plan_id"/>
                         <field name="sales_target"/>
+                        <field name="led_team_ids" widget="many2many_tags"/>
                         <!-- TODO Remove salesperson from tree -->
                         <field name="sale_order_ids2"/>
                     </group>

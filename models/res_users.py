@@ -22,6 +22,10 @@ class ResUsers(models.Model):
         required=True,
         string=_('Commission plan'),
     )
+    led_team_ids = fields.One2many(
+        comodel_name='crm.team',
+        inverse_name='user_id',
+    )
 
     @api.constrains('sales_target')
     def _check_sales_target_no_negative(self):

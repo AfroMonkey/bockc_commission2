@@ -73,7 +73,9 @@ class WizardSaleCommissionRow(models.TransientModel):
         for record in self:
             SaleOrder = self.env['sale.order']
             record.sale_order_ids = SaleOrder.search([
+                '|',
                 ('user_id', '=', record.user_id.id),
+                ('team_id', 'in', record.user_id.led_team_ids.ids),
                 ('confirmation_date', '>=', record.start_date),
                 ('confirmation_date', '<', record.end_date),
                 # ('invoice_status', '=', 'invoiced'),
@@ -84,7 +86,9 @@ class WizardSaleCommissionRow(models.TransientModel):
         for record in self:
             SaleOrder = self.env['sale.order']
             orders = SaleOrder.search([
+                '|',
                 ('user_id', '=', record.user_id.id),
+                ('team_id', 'in', record.user_id.led_team_ids.ids),
                 # ('invoice_status', '=', 'invoiced'),
             ])
             record.sale_order_paid_ids = orders.filtered(lambda order: order.fully_paid and order.last_payment >= record.start_date and order.last_payment < record.end_date)
