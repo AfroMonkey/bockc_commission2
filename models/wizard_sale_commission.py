@@ -20,31 +20,39 @@ class WizardSaleCommission(models.TransientModel):
         string='Rows',
         readonly=True,
     )
-    month = fields.Selection([
-        (1, 'January'),
-        (2, 'February'),
-        (3, 'March'),
-        (4, 'April'),
-        (5, 'May'),
-        (6, 'June'),
-        (7, 'July'),
-        (8, 'August'),
-        (9, 'September'),
-        (10, 'October'),
-        (11, 'November'),
-        (12, 'December'),
-    ])
+    year = fields.Integer(
+        default=fields.Date.today().year,
+        required=True,
+    )
+    month = fields.Selection(
+        [
+            (1, 'January'),
+            (2, 'February'),
+            (3, 'March'),
+            (4, 'April'),
+            (5, 'May'),
+            (6, 'June'),
+            (7, 'July'),
+            (8, 'August'),
+            (9, 'September'),
+            (10, 'October'),
+            (11, 'November'),
+            (12, 'December'),
+        ],
+        default=fields.Date.today().month,
+        required=True,
+    )
 
     def _get_start_date(self):
         for record in self:
-            record.start_date = date(fields.Date.today().year, record.month, 1)
+            record.start_date = date(record.year, record.month, 1)
 
     def _get_end_date(self):
         for record in self:
             if record.month == 12:
-                record.end_date = date(fields.Date.today().year + 1, 1, 1)
+                record.end_date = date(record.year + 1, 1, 1)
             else:
-                record.end_date = date(fields.Date.today().year, record.month + 1, 1)
+                record.end_date = date(record.year, record.month + 1, 1)
 
     @api.constrains('start_date', 'end_date')
     def _check_dates(self):
