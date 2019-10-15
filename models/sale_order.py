@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class SaleOrder(models.Model):
@@ -9,3 +9,24 @@ class SaleOrder(models.Model):
     commission = fields.Monetary(
     )
     commissioned = fields.Boolean(default=False)
+    fully_paid = fields.Boolean(
+        compute='_get_fully_paid'
+    )
+    last_payment = fields.Date(
+        compute='_get_last_payment'
+    )
+
+    @api.depends('invoice_ids')
+    def _get_fully_paid(self):
+        for record in self:
+            record.fully_paid = record.invoice_ids and all(invoice.state == 'paid' for invoice in record.invoice_ids)
+
+    @api.depends('invoice_ids')
+    def _get_last_payment(self):
+        for record in self:
+            payments = []
+            for invoice in record.invoice_ids:
+                payments.extend(invoice._get_payments_vals())
+            payments.sort(key=lambda payment: payment['date'])
+            if payments:
+                record.last_payment = payments[-1]['date']
