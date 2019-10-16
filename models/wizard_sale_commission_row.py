@@ -39,10 +39,6 @@ class WizardSaleCommissionRow(models.TransientModel):
         currency_field='currency_id',
         compute='_get_total_sales',
     )
-    total_sales_paid = fields.Monetary(
-        currency_field='currency_id',
-        compute='_get_total_sales_paid',
-    )
     sales_target = fields.Monetary(
         compute='_get_sales_target',
     )
@@ -108,11 +104,6 @@ class WizardSaleCommissionRow(models.TransientModel):
         for record in self:
             record.total_sales = sum(order.amount_untaxed for order in record.sale_order_ids)
 
-    @api.depends('sale_order_paid_ids')
-    def _get_total_sales_paid(self):
-        for record in self:
-            record.total_sales_paid = sum(order.amount_untaxed for order in record.sale_order_paid_ids)
-
     @api.depends('total_sales', 'sales_target')
     def _get_compliance_percentage(self):
         for record in self:
@@ -135,13 +126,14 @@ class WizardSaleCommissionRow(models.TransientModel):
             else:
                 record.bonus_percentage = 0
             for order in record.sale_order_ids:
+                amount = sum(payment.amount for invoice in order.invoice_ids for payment in invoice.payment_ids)
                 order.write({
                     'commission_percentage': record.bonus_percentage,
-                    'commission': order.amount_untaxed * record.bonus_percentage / 100 if order.fully_paid else 0,
+                    'commission': amount * record.bonus_percentage / 100 if order.fully_paid else 0,
                     'commissioned': True,
                 })
 
-    @api.depends('bonus_percentage', 'total_sales_paid')
+    @api.depends('sale_order_paid_ids')
     def _get_commission(self):
         for record in self:
             record.commission = sum([order.commission for order in record.sale_order_paid_ids])
