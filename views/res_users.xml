@@ -8,9 +8,14 @@
             <notebook position="inside">
                 <page string="Sales target">
                     <group>
-                        <field name="currency_id" invisible="1"/>
                         <field name="commission_plan_id"/>
-                        <field name="sales_target"/>
+                        <field name="sales_target_ids">
+                            <tree editable="bottom">
+                                <field name="year"/>
+                                <field name="month"/>
+                                <field name="target"/>
+                            </tree>
+                        </field>
                         <field name="led_team_ids" widget="many2many_tags"/>
                         <!-- TODO Remove salesperson from tree -->
                         <field name="sale_order_ids2"/>

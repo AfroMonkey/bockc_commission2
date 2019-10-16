@@ -44,7 +44,7 @@ class WizardSaleCommissionRow(models.TransientModel):
         compute='_get_total_sales_paid',
     )
     sales_target = fields.Monetary(
-        related='user_id.sales_target',
+        compute='_get_sales_target',
     )
     compliance_percentage = fields.Float(
         compute='_get_compliance_percentage',
@@ -67,6 +67,16 @@ class WizardSaleCommissionRow(models.TransientModel):
     all_sale_order_ids = fields.One2many(
         related='user_id.sale_order_ids2',
     )
+
+    @api.depends('user_id', 'start_date', 'end_date')
+    def _get_sales_target(self):
+        for record in self:
+            sale_target = record.user_id.sales_target_ids.search([
+                ('user_id', '=', record.user_id.id),
+                ('start_date', '=', record.start_date),
+                ('end_date', '=', record.end_date),
+            ])
+            record.sales_target = sale_target.target if sale_target else 0
 
     @api.depends('start_date', 'end_date', 'user_id')
     def _get_sale_order_ids(self):
