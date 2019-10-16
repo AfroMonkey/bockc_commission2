@@ -9,9 +9,6 @@ class CommissionPlanRow(models.Model):
         comodel_name='res.currency',
         default=lambda self: self.env.ref('base.main_company').currency_id.id,
     )
-    name = fields.Monetary(
-        related='margin',
-    )
     margin = fields.Monetary(
         currency_field='currency_id',
         required=True,
