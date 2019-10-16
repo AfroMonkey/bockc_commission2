@@ -5,6 +5,7 @@ from odoo import api, fields, models, _
 
 class SaleTarget(models.Model):
     _name = 'sale.target'
+    _description = 'Relation between period and sales target.'
 
     start_date = fields.Date(
         compute='_get_start_date',

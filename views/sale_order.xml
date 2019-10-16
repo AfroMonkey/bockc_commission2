@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_order_gp_percentage_form" model="ir.ui.view">
+        <field name="name">sale.order.gp_percentage.form</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale_margin.sale_margin_sale_order"/>
+        <field name="arch" type="xml">
+            <field name="margin" position="after">
+                <field name="gp_percentage"/>
+            </field>
+        </field>
+    </record>
+</odoo>

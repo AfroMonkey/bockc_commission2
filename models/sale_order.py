@@ -15,6 +15,9 @@ class SaleOrder(models.Model):
     last_payment = fields.Date(
         compute='_get_last_payment'
     )
+    gp_percentage = fields.Float(
+        compute='_get_gp_percentage',
+    )
 
     @api.depends('invoice_ids')
     def _get_fully_paid(self):
@@ -30,3 +33,8 @@ class SaleOrder(models.Model):
             payments.sort(key=lambda payment: payment['date'])
             if payments:
                 record.last_payment = payments[-1]['date']
+
+    @api.depends('amount_untaxed', 'margin')
+    def _get_gp_percentage(self):
+        for record in self:
+            record.gp_percentage = 100 * record.margin / record.amount_untaxed

@@ -20,18 +20,21 @@
 
 {
     'name': 'BOCKC Commission',
-    'version': '1.2.0',
+    'version': '1.3.0',
     'author': 'Moisés Navarro',
     'website': 'https://github.com/AfroMonkey',
     'depends': [
         'sale',
         'crm',
+        'sale_margin',
     ],
     'data': [
         'security/ir.model.access.csv',
         'views/res_users.xml',
+        'views/sale_order.xml',
         'views/wizard_sale_commission_row.xml',
         'views/wizard_sale_commission.xml',
+        'views/res_config_settings.xml',
         'views/commission_plan.xml',
     ]
 }

@@ -127,9 +127,11 @@ class WizardSaleCommissionRow(models.TransientModel):
                 record.bonus_percentage = 0
             for order in record.sale_order_ids:
                 amount = sum(payment.amount for invoice in order.invoice_ids for payment in invoice.payment_ids)
+                settings = self.env['res.config.settings'].default_get('')
+                minimal_gp = settings['minimal_gp_percentage']
                 order.write({
                     'commission_percentage': record.bonus_percentage,
-                    'commission': amount * record.bonus_percentage / 100 if order.fully_paid else 0,
+                    'commission': amount * record.bonus_percentage / 100 if order.fully_paid and order.gp_percentage >= minimal_gp else 0,
                     'commissioned': True,
                 })
 
