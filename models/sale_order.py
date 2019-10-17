@@ -37,4 +37,4 @@ class SaleOrder(models.Model):
     @api.depends('amount_untaxed', 'margin')
     def _get_gp_percentage(self):
         for record in self:
-            record.gp_percentage = 100 * record.margin / record.amount_untaxed
+            record.gp_percentage = 100 * record.margin / record.amount_untaxed if record.amount_untaxed else 0

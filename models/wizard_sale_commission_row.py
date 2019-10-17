@@ -107,7 +107,7 @@ class WizardSaleCommissionRow(models.TransientModel):
     @api.depends('total_sales', 'sales_target')
     def _get_compliance_percentage(self):
         for record in self:
-            record.compliance_percentage = record.sales_target and 100 * record.total_sales / record.sales_target or 0
+            record.compliance_percentage = 100 * record.total_sales / record.sales_target if record.sales_target else 0
 
     @api.depends('total_sales', 'sales_target')
     def _get_margin(self):
