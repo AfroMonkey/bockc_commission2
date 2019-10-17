@@ -8,6 +8,8 @@ class SaleOrder(models.Model):
     )
     commission = fields.Monetary(
     )
+    commissionable_amount = fields.Monetary(
+    )
     commissioned = fields.Boolean(default=False)
     fully_paid = fields.Boolean(
         compute='_get_fully_paid'

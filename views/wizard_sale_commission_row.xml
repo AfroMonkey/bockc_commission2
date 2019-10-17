@@ -24,6 +24,7 @@
                             <field name="team_id"/>
                             <field name="invoice_ids" widget="many2many_tags"/>
                             <field name="amount_untaxed"/>
+                            <field name="commissionable_amount"/>
                             <field name="commission_percentage"/>
                             <field name="fully_paid"/>
                             <field name="commission"/>
