@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class WizardSaleCommissionRow(models.TransientModel):
@@ -44,9 +44,11 @@ class WizardSaleCommissionRow(models.TransientModel):
     )
     compliance_percentage = fields.Float(
         compute='_get_compliance_percentage',
+        string=_('Percentage of Target'),
     )
     bonus_percentage = fields.Float(
         compute='_get_bonus_percentage',
+        string=_('Commission %'),
     )
     commission = fields.Monetary(
         currency_field='currency_id',
@@ -59,6 +61,7 @@ class WizardSaleCommissionRow(models.TransientModel):
     margin = fields.Monetary(
         currency_field='currency_id',
         compute='_get_margin',
+        string=_('Difference from Target'),
     )
     all_sale_order_ids = fields.One2many(
         related='user_id.sale_order_ids2',

@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, _
 
 
 class CommissionPlanRow(models.Model):
@@ -12,9 +12,11 @@ class CommissionPlanRow(models.Model):
     margin = fields.Monetary(
         currency_field='currency_id',
         required=True,
+        string=_('Difference from Target'),
     )
     percentage = fields.Float(
         required=True,
+        string=_('%'),
     )
     commission_plan_id = fields.Many2one(
         comodel_name='commission.plan',
