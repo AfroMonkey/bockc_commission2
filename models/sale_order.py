@@ -1,4 +1,4 @@
-from odoo import api, fields, models
+from odoo import api, fields, models, _
 
 
 class SaleOrder(models.Model):
@@ -40,3 +40,15 @@ class SaleOrder(models.Model):
     def _get_gp_percentage(self):
         for record in self:
             record.gp_percentage = 100 * record.margin / record.amount_untaxed if record.amount_untaxed else 0
+
+    @api.onchange('gp_percentage')
+    def _check_gp_percentage(self):
+        settings = self.env['res.config.settings'].default_get('')
+        minimal_gp = settings['minimal_gp_percentage']
+        if self.amount_untaxed and self.gp_percentage < minimal_gp:
+            return {
+                'warning': {
+                    'title': _('Minimal GP'),
+                    'message': _('You are below the minimum required GP%% on this order. If you proceed you will not receive commission on this sale!'),
+                }
+            }
