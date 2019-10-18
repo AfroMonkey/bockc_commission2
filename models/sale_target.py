@@ -41,8 +41,7 @@ class SaleTarget(models.Model):
         comodel_name='res.currency',
         default=lambda self: self.env.ref('base.main_company').currency_id.id,
     )
-    target = fields.Monetary(
-        currency_field='currency_id',
+    target = fields.Float(
         required=True,
     )
     user_id = fields.Many2one(

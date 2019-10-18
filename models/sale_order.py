@@ -6,9 +6,9 @@ class SaleOrder(models.Model):
 
     commission_percentage = fields.Float(
     )
-    commission = fields.Monetary(
+    commission = fields.Float(
     )
-    commissionable_amount = fields.Monetary(
+    commissionable_amount = fields.Float(
     )
     commissioned = fields.Boolean(default=False)
     fully_paid = fields.Boolean(
@@ -19,6 +19,8 @@ class SaleOrder(models.Model):
     )
     gp_percentage = fields.Float(
         compute='_get_gp_percentage',
+    )
+    commission_estimated = fields.Float(
     )
 
     @api.depends('invoice_ids')

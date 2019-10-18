@@ -35,11 +35,10 @@ class WizardSaleCommissionRow(models.TransientModel):
         default=lambda self: self.env.ref('base.main_company').currency_id.id,
         store=False,
     )
-    total_sales = fields.Monetary(
-        currency_field='currency_id',
+    total_sales = fields.Float(
         compute='_get_total_sales',
     )
-    sales_target = fields.Monetary(
+    sales_target = fields.Float(
         compute='_get_sales_target',
     )
     compliance_percentage = fields.Float(
@@ -50,21 +49,27 @@ class WizardSaleCommissionRow(models.TransientModel):
         compute='_get_bonus_percentage',
         string=_('Commission %'),
     )
-    commission = fields.Monetary(
-        currency_field='currency_id',
+    commission = fields.Float(
         compute='_get_commission',
     )
-    commission_estimated = fields.Monetary(
-        currency_field='currency_id',
+    commission_estimated = fields.Float(
         compute='_get_commission_estimated',
     )
-    margin = fields.Monetary(
-        currency_field='currency_id',
+    margin = fields.Float(
         compute='_get_margin',
         string=_('Difference from Target'),
     )
     all_sale_order_ids = fields.One2many(
         related='user_id.sale_order_ids2',
+    )
+    year = fields.Integer(
+        related='wizard_id.year',
+    )
+    month = fields.Selection(
+        related='wizard_id.month',
+    )
+    commissionable_amount = fields.Float(
+        compute='_get_commissionable_amount',
     )
 
     @api.depends('user_id', 'start_date', 'end_date')
@@ -137,6 +142,7 @@ class WizardSaleCommissionRow(models.TransientModel):
                     'commissionable_amount': amount,
                     'commission_percentage': record.bonus_percentage,
                     'commission': amount * record.bonus_percentage / 100 if order.fully_paid and order.gp_percentage >= minimal_gp else 0,
+                    'commission_estimated': order.amount_untaxed * record.bonus_percentage / 100,
                     'commissioned': True,
                 })
 
@@ -149,3 +155,8 @@ class WizardSaleCommissionRow(models.TransientModel):
     def _get_commission_estimated(self):
         for record in self:
             record.commission_estimated = record.total_sales * record.bonus_percentage / 100
+
+    @api.depends('sale_order_paid_ids')
+    def _get_commissionable_amount(self):
+        for record in self:
+            record.commissionable_amount = sum([order.commissionable_amount for order in record.sale_order_paid_ids])

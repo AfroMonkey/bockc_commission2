@@ -9,8 +9,7 @@ class CommissionPlanRow(models.Model):
         comodel_name='res.currency',
         default=lambda self: self.env.ref('base.main_company').currency_id.id,
     )
-    margin = fields.Monetary(
-        currency_field='currency_id',
+    margin = fields.Float(
         required=True,
         string=_('Difference from Target'),
     )
