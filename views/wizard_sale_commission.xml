@@ -14,7 +14,7 @@
                     <button name="get_commissions" type="object" string="Calculate" class="oe_highlight"/>
                     or
                     <button special="cancel" string="Cancel"/>
-                    <button name="%(report_commission3)d" string="Commission Sales Report" type="action"/>
+                    <button name="%(report_commission_sale_multiple)d" string="Commission Sales Report" type="action"/>
                     <button name="%(report_commission_payout_multiple)d" string="Commission Payout Report" type="action"/>
                 </footer>
             </form>

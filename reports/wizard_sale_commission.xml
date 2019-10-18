@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <report id="report_commission3" model="wizard_sale_commission" string="Commission Sales Report" name="bockc_commission.report_commission3_view" file="bockc_commission.report_commission3" report_type="qweb-pdf" />
+    <report id="report_commission_sale_multiple" model="wizard_sale_commission" string="Commission Sales Report" name="bockc_commission.report_commission_sale_multiple_view" file="bockc_commission.report_commission_sale_multiple" report_type="qweb-pdf" />
 
-    <template id="report_commission3_view">
+    <template id="report_commission_sale_multiple_view">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
                 <t t-call="web.external_layout">
