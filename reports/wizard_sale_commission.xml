@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <report id="report_commission3" model="wizard_sale_commission" string="Commission Sales Report" name="bockc_commission.report_commission3_view" file="bockc_commission.report_commission3" report_type="qweb-pdf" />
+
+    <template id="report_commission3_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <t t-foreach="doc.row_ids" t-as="row">
+                        <div class="page" style="page-break-after:always;">
+                            <h1>
+                                Commission Sales Report
+                            </h1>
+                            <h2>
+                                Report for <span t-esc="int(row['year'])"/> - <span t-field="row.month"/>
+                            </h2>
+                            <h2>
+                                Salesman: <span t-field="row.user_id"/>
+                            </h2>
+                            <div>
+                                Date Issued: <span t-field="row.create_date"/>
+                            </div>
+                            <div>
+                                Sales Target: $<span t-options='{"precision": 2}' t-field="row.sales_target"/>
+                            </div>
+                            <div>
+                                Total Sales: $<span t-options='{"precision": 2}' t-field="row.total_sales"/>
+                            </div>
+                            <div>
+                                Commission Estimated: $<span t-options='{"precision": 2}' t-field="row.commission_estimated"/>
+                            </div>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Order Reference</th>
+                                        <th>Confirmation Date</th>
+                                        <th>Untaxed Amount</th>
+                                        <th>Commission %%</th>
+                                        <th>Commission</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+                                    <t t-foreach="row.sale_order_ids" t-as="order">
+                                        <tr>
+                                            <td>
+                                                <span t-field="order.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="order.confirmation_date"/>
+                                            </td>
+                                            <td>
+                                                <span t-options='{"precision": 2}' t-field="order.amount_untaxed"/>
+                                            </td>
+                                            <td>
+                                                <span t-options='{"precision": 2}' t-field="order.commission_percentage"/>
+                                            </td>
+                                            <td>
+                                                <span t-options='{"precision": 2}' t-field="order.commission_estimated"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <tr>
+                                        <th>TOTALS</th>
+                                        <th></th>
+                                        <th>$<span t-options='{"precision": 2}' t-field="row.total_sales"/></th>
+                                        <th></th>
+                                        <th>$<span t-options='{"precision": 2}' t-field="row.commission_estimated"/></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <report id="report_commission_payout_multiple" model="wizard_sale_commission" string="Commission Payout Report" name="bockc_commission.report_commission_payout_multiple_view" file="bockc_commission.report_commission_payout_multiple" report_type="qweb-pdf" />
+
+    <template id="report_commission_payout_multiple_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <t t-foreach="doc.row_ids" t-as="row">
+                        <div class="page" style="page-break-after:always;">
+                            <h1>
+                                Commission Payout Report
+                            </h1>
+                            <h2>
+                                Report for <span t-esc="int(row['year'])"/> - <span t-field="row.month"/>
+                            </h2>
+                            <h2>
+                                Salesman: <span t-field="row.user_id"/>
+                            </h2>
+                            <div>
+                                Commission: $<span t-options='{"precision": 2}' t-field="row.commission"/>
+                            </div>
+                            <div>
+                                Date Issued: <span t-field="row.create_date"/>
+                            </div>
+                            <table class="table table-sm o_main_table">
+                                <thead>
+                                    <tr>
+                                        <th>Order Reference</th>
+                                        <th>Invoices</th>
+                                        <th>Untaxed Amount</th>
+                                        <th>Commissionable Amount</th>
+                                        <th>Commission %%</th>
+                                        <th>Commission</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="sale_tbody">
+                                    <t t-foreach="row.sale_order_paid_ids" t-as="order">
+                                        <tr>
+                                            <td>
+                                                <span t-field="order.name"/>
+                                            </td>
+                                            <td>
+                                                <span t-field="order.invoice_ids"/>
+                                            </td>
+                                            <td>
+                                                <span t-options='{"precision": 2}' t-field="order.amount_untaxed"/>
+                                            </td>
+                                            <td>
+                                                <span t-options='{"precision": 2}' t-field="order.commissionable_amount"/>
+                                            </td>
+                                            <td>
+                                                <span t-options='{"precision": 2}' t-field="order.commission_percentage"/>
+                                            </td>
+                                            <td>
+                                                <span t-options='{"precision": 2}' t-field="order.commission"/>
+                                            </td>
+                                        </tr>
+                                    </t>
+                                    <tr>
+                                        <th>TOTALS</th>
+                                        <th></th>
+                                        <th></th>
+                                        <th>$<span t-options='{"precision": 2}' t-field="row.commissionable_amount"/></th>
+                                        <th></th>
+                                        <th>$<span t-options='{"precision": 2}' t-field="row.commission"/></th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
