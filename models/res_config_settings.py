@@ -5,6 +5,6 @@ class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
     minimal_gp_percentage = fields.Float(
-        config_parameter='bockc_commission.minimal_gp',
+        config_parameter='bockc_commission2.minimal_gp',
         string=_('Minimal GP %'),
     )
