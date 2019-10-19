@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <report id="report_commission_sale_multiple" model="wizard_sale_commission" string="Commission Sales Report" name="bockc_commission2.report_commission_sale_multiple_view" file="bockc_commission2.report_commission_sale_multiple" report_type="qweb-pdf" />
-
     <template id="report_commission_sale_multiple_view">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
@@ -75,7 +73,8 @@
         </t>
     </template>
 
-    <report id="report_commission_payout_multiple" model="wizard_sale_commission" string="Commission Payout Report" name="bockc_commission2.report_commission_payout_multiple_view" file="bockc_commission2.report_commission_payout_multiple" report_type="qweb-pdf" />
+    <report id="report_commission_sale_multiple" model="wizard_sale_commission" string="Commission Sales Report" name="bockc_commission2.report_commission_sale_multiple_view" file="bockc_commission2.report_commission_sale_multiple" report_type="qweb-pdf" />
+
 
     <template id="report_commission_payout_multiple_view">
         <t t-call="web.html_container">
@@ -148,4 +147,7 @@
             </t>
         </t>
     </template>
+
+    <report id="report_commission_payout_multiple" model="wizard_sale_commission" string="Commission Payout Report" name="bockc_commission2.report_commission_payout_multiple_view" file="bockc_commission2.report_commission_payout_multiple" report_type="qweb-pdf" />
+
 </odoo>

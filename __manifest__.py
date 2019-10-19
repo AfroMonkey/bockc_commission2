@@ -20,7 +20,7 @@
 
 {
     'name': 'BOCKC Commission',
-    'version': '1.4.2',
+    'version': '1.4.3',
     'author': 'Moisés Navarro',
     'website': 'https://github.com/AfroMonkey',
     'depends': [
@@ -32,7 +32,7 @@
         'security/ir.model.access.csv',
         'reports/wizard_sale_commission.xml',
         'reports/wizard_sale_commission_row.xml',
-        # 'views/res_users.xml',
+        'views/res_users.xml',
         'views/sale_order.xml',
         'views/wizard_sale_commission_row.xml',
         'views/wizard_sale_commission.xml',
