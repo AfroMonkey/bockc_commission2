@@ -105,7 +105,8 @@ class WizardSaleCommissionRow(models.TransientModel):
                 ('team_id', 'in', record.user_id.led_team_ids.ids),
                 # ('invoice_status', '=', 'invoiced'),
             ])
-            record.sale_order_paid_ids = orders.filtered(lambda order, record=record: order.fully_paid and order.last_payment >= record.start_date and order.last_payment < record.end_date)
+            record.sale_order_paid_ids = orders.filtered(lambda order, record=record: order.fully_paid and order.last_payment and order.last_payment >=
+                                                         record.start_date and order.last_payment < record.end_date)
 
     @api.depends('sale_order_ids')
     def _get_total_sales(self):
