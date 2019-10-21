@@ -105,18 +105,22 @@ class WizardSaleCommissionRow(models.TransientModel):
                 ('team_id', 'in', record.user_id.led_team_ids.ids),
                 ('status', '!=', 'cancel'),
             ])
-            record.sale_order_paid_ids = orders.filtered(lambda order, record=record: order.fully_paid and order.last_payment and order.last_payment >=
-                                                         record.start_date and order.last_payment < record.end_date)
+            record.sale_order_paid_ids = orders.filtered(lambda order, record=record:
+                                                         order.fully_paid and order.last_payment and
+                                                         order.last_payment >= record.start_date and
+                                                         order.last_payment < record.end_date)
 
     @api.depends('sale_order_ids')
     def _get_total_sales(self):
         for record in self:
-            record.total_sales = sum(order.amount_untaxed for order in record.sale_order_ids)
+            record.total_sales = sum(order.amount_untaxed
+                                     for order in record.sale_order_ids)
 
     @api.depends('total_sales', 'sales_target')
     def _get_compliance_percentage(self):
         for record in self:
-            record.compliance_percentage = 100 * record.total_sales / record.sales_target if record.sales_target else 0
+            record.compliance_percentage = (100 * record.total_sales / record.sales_target
+                                            if record.sales_target else 0)
 
     @api.depends('total_sales', 'sales_target')
     def _get_margin(self):
@@ -135,14 +139,18 @@ class WizardSaleCommissionRow(models.TransientModel):
             else:
                 record.bonus_percentage = 0
             for order in record.sale_order_ids:
-                amount = sum(payment.amount for invoice in order.invoice_ids for payment in invoice.payment_ids)
+                amount = sum(payment.amount
+                             for invoice in order.invoice_ids
+                             for payment in invoice.payment_ids)
                 amount -= sum(invoice.amount_tax for invoice in order.invoice_ids)
                 settings = self.env['res.config.settings'].default_get('')
                 minimal_gp = settings['minimal_gp_percentage']
+                commission = (amount * record.bonus_percentage / 100
+                              if order.fully_paid and order.gp_percentage >= minimal_gp else 0)
                 order.write({
                     'commissionable_amount': amount,
                     'commission_percentage': record.bonus_percentage,
-                    'commission': amount * record.bonus_percentage / 100 if order.fully_paid and order.gp_percentage >= minimal_gp else 0,
+                    'commission': commission,
                     'commission_estimated': order.amount_untaxed * record.bonus_percentage / 100,
                     'commissioned': True,
                 })
@@ -150,7 +158,8 @@ class WizardSaleCommissionRow(models.TransientModel):
     @api.depends('sale_order_paid_ids')
     def _get_commission(self):
         for record in self:
-            record.commission = sum([order.commission for order in record.sale_order_paid_ids])
+            record.commission = sum([order.commission
+                                     for order in record.sale_order_paid_ids])
 
     @api.depends('bonus_percentage', 'total_sales')
     def _get_commission_estimated(self):
@@ -160,4 +169,5 @@ class WizardSaleCommissionRow(models.TransientModel):
     @api.depends('sale_order_paid_ids')
     def _get_commissionable_amount(self):
         for record in self:
-            record.commissionable_amount = sum([order.commissionable_amount for order in record.sale_order_paid_ids])
+            record.commissionable_amount = sum([order.commissionable_amount
+                                                for order in record.sale_order_paid_ids])

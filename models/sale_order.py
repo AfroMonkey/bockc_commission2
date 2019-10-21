@@ -26,7 +26,8 @@ class SaleOrder(models.Model):
     @api.depends('invoice_ids')
     def _get_fully_paid(self):
         for record in self:
-            record.fully_paid = record.invoice_ids and all(invoice.state == 'paid' for invoice in record.invoice_ids)
+            record.fully_paid = (all(invoice.state == 'paid' for invoice in record.invoice_ids)
+                                 if record.invoice_ids else False)
 
     @api.depends('invoice_ids')
     def _get_last_payment(self):
@@ -41,11 +42,12 @@ class SaleOrder(models.Model):
     @api.depends('amount_untaxed', 'margin')
     def _get_gp_percentage(self):
         for record in self:
-            record.gp_percentage = 100 * record.margin / record.amount_untaxed if record.amount_untaxed else 0
+            record.gp_percentage = (100 * record.margin / record.amount_untaxed
+                                    if record.amount_untaxed else 0)
 
     @api.onchange('gp_percentage')
     def _check_gp_percentage(self):
-        settings = self.env['res.config.settings'].default_get('')
+        settings = self.env['res.config.settings'].sudo().default_get('')
         minimal_gp = settings['minimal_gp_percentage']
         if self.amount_untaxed and self.gp_percentage < minimal_gp:
             return {
