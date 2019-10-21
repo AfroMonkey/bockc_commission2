@@ -92,7 +92,7 @@ class WizardSaleCommissionRow(models.TransientModel):
                 ('team_id', 'in', record.user_id.led_team_ids.ids),
                 ('confirmation_date', '>=', record.start_date),
                 ('confirmation_date', '<', record.end_date),
-                ('status', '!=', 'cancel'),
+                ('state', '!=', 'cancel'),
             ])
 
     @api.depends('sale_order_ids')
@@ -103,7 +103,7 @@ class WizardSaleCommissionRow(models.TransientModel):
                 '|',
                 ('user_id', '=', record.user_id.id),
                 ('team_id', 'in', record.user_id.led_team_ids.ids),
-                ('status', '!=', 'cancel'),
+                ('state', '!=', 'cancel'),
             ])
             record.sale_order_paid_ids = orders.filtered(lambda order, record=record:
                                                          order.fully_paid and order.last_payment and
