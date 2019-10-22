@@ -16,7 +16,6 @@ class ResUsers(models.Model):
     )
     commission_plan_id = fields.Many2one(
         comodel_name='commission.plan',
-        required=True,
         string=_('Commission plan'),
     )
     led_team_ids = fields.One2many(
