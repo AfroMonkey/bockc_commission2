@@ -20,7 +20,7 @@
 
 {
     'name': 'BOCKC Commission',
-    'version': '1.5.2',
+    'version': '1.6.0',
     'author': 'Moisés Navarro',
     'website': 'https://github.com/AfroMonkey',
     'depends': [

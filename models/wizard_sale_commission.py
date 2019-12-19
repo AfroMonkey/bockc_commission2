@@ -64,7 +64,7 @@ class WizardSaleCommission(models.TransientModel):
     def get_commissions(self):
         '''Compute commission rows'''
         self.row_ids.unlink()
-        for user in self.env['res.users'].search([]):
+        for user in self.env['res.users'].search([('commission_plan_id', '!=', False)]):
             self.row_ids += self.env['wizard_sale_commission.row'].create({
                 'wizard_id': self.id,
                 'user_id': user.id,

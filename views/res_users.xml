@@ -8,7 +8,7 @@
             <notebook position="inside">
                 <page string="Sales target">
                     <group>
-                        <field name="commission_plan_id" required="1"/>
+                        <field name="commission_plan_id"/>
                         <field name="sales_target_ids">
                             <tree editable="bottom">
                                 <field name="year"/>
