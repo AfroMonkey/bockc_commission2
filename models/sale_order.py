@@ -7,10 +7,17 @@ class SaleOrder(models.Model):
     commission_percentage = fields.Float(
     )
     commission = fields.Float(
+        compute='_get_commission_values',
+    )
+    commission_percentage_lead = fields.Float(
+    )
+    commission_lead = fields.Float(
+        compute='_get_commission_lead_values',
     )
     commissionable_amount = fields.Float(
+        compute='_get_commissionable_amount',
+        # store=True,
     )
-    commissioned = fields.Boolean(default=False)
     fully_paid = fields.Boolean(
         compute='_get_fully_paid'
     )
@@ -21,7 +28,39 @@ class SaleOrder(models.Model):
         compute='_get_gp_percentage',
     )
     commission_estimated = fields.Float(
+        compute='_get_commission_values',
     )
+    commission_estimated_lead = fields.Float(
+        compute='_get_commission_lead_values',
+    )
+    lead_id = fields.Many2one(
+        related='team_id.user_id',
+    )
+
+    @api.depends('commission_percentage')
+    def _get_commission_values(self):
+        settings = self.env['res.config.settings'].default_get('')
+        minimal_gp = settings['minimal_gp_percentage']
+        for record in self:
+            record.commission = (record.commissionable_amount * record.commission_percentage / 100
+                                 if record.fully_paid and record.gp_percentage >= minimal_gp else 0)
+            record.commission_estimated = record.amount_untaxed * record.commission_percentage / 100
+
+    @api.depends('commission_percentage_lead')
+    def _get_commission_lead_values(self):
+        settings = self.env['res.config.settings'].default_get('')
+        minimal_gp = settings['minimal_gp_percentage']
+        for record in self:
+            record.commission_lead = (record.commissionable_amount * record.commission_percentage_lead / 100
+                                      if record.fully_paid and record.gp_percentage >= minimal_gp else 0)
+            record.commission_estimated_lead = record.amount_untaxed * record.commission_percentage_lead / 100
+
+    @api.depends('invoice_ids')
+    def _get_commissionable_amount(self):
+        for record in self:
+            record.commissionable_amount = sum(payment.amount
+                                               for invoice in record.invoice_ids
+                                               for payment in invoice.payment_ids) - sum(invoice.amount_tax for invoice in record.invoice_ids)
 
     @api.depends('invoice_ids')
     def _get_fully_paid(self):

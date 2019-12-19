@@ -138,22 +138,12 @@ class WizardSaleCommissionRow(models.TransientModel):
                         record.bonus_percentage = row.percentage
             else:
                 record.bonus_percentage = 0
-            for order in record.sale_order_ids:
-                amount = sum(payment.amount
-                             for invoice in order.invoice_ids
-                             for payment in invoice.payment_ids)
-                amount -= sum(invoice.amount_tax for invoice in order.invoice_ids)
-                settings = self.env['res.config.settings'].default_get('')
-                minimal_gp = settings['minimal_gp_percentage']
-                commission = (amount * record.bonus_percentage / 100
-                              if order.fully_paid and order.gp_percentage >= minimal_gp else 0)
-                order.write({
-                    'commissionable_amount': amount,
-                    'commission_percentage': record.bonus_percentage,
-                    'commission': commission,
-                    'commission_estimated': order.amount_untaxed * record.bonus_percentage / 100,
-                    'commissioned': True,
-                })
+            record.sale_order_ids.filtered(lambda r: r.user_id.id == record.user_id.id).write({
+                'commission_percentage': record.bonus_percentage,
+            })
+            record.sale_order_ids.filtered(lambda r: r.team_id.id in record.user_id.led_team_ids.ids).write({
+                'commission_percentage_lead': record.bonus_percentage,
+            })
 
     @api.depends('sale_order_paid_ids')
     def _get_commission(self):

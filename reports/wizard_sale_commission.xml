@@ -14,6 +14,7 @@
                             </h2>
                             <h2>
                                 Salesman: <span t-field="row.user_id"/>
+                                <t t-set="user_id" t-value="row.user_id"/>
                             </h2>
                             <div>
                                 Date Issued: <span t-field="row.create_date"/>
@@ -49,12 +50,14 @@
                                             <td>
                                                 <span t-options='{"precision": 2}' t-field="order.amount_untaxed"/>
                                             </td>
-                                            <td>
-                                                <span t-options='{"precision": 2}' t-field="order.commission_percentage"/>
-                                            </td>
-                                            <td>
-                                                <span t-options='{"precision": 2}' t-field="order.commission_estimated"/>
-                                            </td>
+                                        <td>
+                                            <span t-if="order.user_id == user_id" t-options='{"precision": 2}' t-field="order.commission_percentage"/>
+                                            <span t-if="order.user_id != user_id" t-options='{"precision": 2}' t-field="order.commission_percentage_lead"/>
+                                        </td>
+                                        <td>
+                                            <span t-if="order.user_id == user_id" t-options='{"precision": 2}' t-field="order.commission"/>
+                                            <span t-if="order.user_id != user_id" t-options='{"precision": 2}' t-field="order.commission_lead"/>
+                                        </td>
                                         </tr>
                                     </t>
                                     <tr>
@@ -90,6 +93,7 @@
                             </h2>
                             <h2>
                                 Salesman: <span t-field="row.user_id"/>
+                                <t t-set="user_id" t-value="row.user_id"/>
                             </h2>
                             <div>
                                 Commission: $<span t-options='{"precision": 2}' t-field="row.commission"/>
@@ -124,10 +128,12 @@
                                                 <span t-options='{"precision": 2}' t-field="order.commissionable_amount"/>
                                             </td>
                                             <td>
-                                                <span t-options='{"precision": 2}' t-field="order.commission_percentage"/>
+                                                <span t-if="order.user_id == user_id" t-options='{"precision": 2}' t-field="order.commission_percentage"/>
+                                                <span t-if="order.user_id != user_id" t-options='{"precision": 2}' t-field="order.commission_percentage_lead"/>
                                             </td>
                                             <td>
-                                                <span t-options='{"precision": 2}' t-field="order.commission"/>
+                                                <span t-if="order.user_id == user_id" t-options='{"precision": 2}' t-field="order.commission"/>
+                                                <span t-if="order.user_id != user_id" t-options='{"precision": 2}' t-field="order.commission_lead"/>
                                             </td>
                                         </tr>
                                     </t>
