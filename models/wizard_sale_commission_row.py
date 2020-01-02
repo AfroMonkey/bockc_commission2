@@ -93,7 +93,6 @@ class WizardSaleCommissionRow(models.TransientModel):
                 ('confirmation_date', '>=', record.start_date),
                 ('confirmation_date', '<', record.end_date),
                 ('state', '!=', 'cancel'),
-                ('invoice_status', '=', 'invoiced'),
             ])
 
     @api.depends('sale_order_ids')
